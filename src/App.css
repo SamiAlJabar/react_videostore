@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700");
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
 
+
 * {
   margin: 0;
   border: 0;
@@ -10,6 +11,7 @@
 :root {
   --font-roboto: "Roboto Slab", serif;
   --font-raleway: "Raleway", sans-serif;
+  --primary-color: #B0DBF3;
 }
 
 body {
@@ -29,15 +31,7 @@ body {
 h1 {
   font-size: 3rem;
   letter-spacing: 0.9px;
-  background: linear-gradient(
-    90deg,
-    rgba(249, 211, 180, 1) 0%,
-    rgba(249, 211, 180, 0) 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  width: fit-content;
+  color: var(--primary-color);
 }
 
 .search {
@@ -74,6 +68,30 @@ h1 {
   cursor: pointer;
 }
 
+button {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+    border-radius: 12px;
+    background-color: #1f2123;
+    color: #a1a1a1;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 5px 5px 7px #1c1d1f, -5px -5px 7px #222527;
+}
+
+button:hover {
+    color: var(--primary-color);
+    transition-duration: 0.3s;
+}
+
+.page-number {
+    color: var(--primary-color);
+    font-size: 1.5rem !important;
+    margin: 10px;
+    font-weight: bold;
+}
+
 /* .search button {
   padding: 20px 40px;
   border-radius: 0.5rem;
@@ -100,7 +118,7 @@ h1 {
 
 .empty h2 {
   font-size: 1.25rem;
-  color: #f9d3b4;
+  color: rgb(255, 89, 89);
   font-family: var(--font-raleway);
 }
 
@@ -138,7 +156,7 @@ h1 {
 }
 
 .movie:hover {
-  box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 15px 5px -4px var(--primary-color);
   transform: scale(1.05, 1.05);
 }
 
@@ -175,7 +193,7 @@ h1 {
 .movie div:nth-of-type(3) h3 {
   margin-top: 5px;
   font-family: "Roboto Slab", serif;
-  color: #f9d3b4;
+  color: var(--primary-color);
 }
 
 .movie:hover div:nth-of-type(2) {
