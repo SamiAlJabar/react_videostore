@@ -1,2 +1,3 @@
 # react_videostore
-Purchase videos of your desire
+Browse through movies, series and games.
+React App deployed using AWS EC2
