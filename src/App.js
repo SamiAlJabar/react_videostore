@@ -3,16 +3,26 @@ import './App.css';
 import SearchIcon from './search.svg';
 import MovieCard from './MovieCard';
 
-const API_URL = 'http://www.omdbapi.com/?apikey=ea6cf8b3';
+const API_URL = 'http://www.omdbapi.com/?apikey=' + process.env.REACT_APP_OMD_API_KEY;
 
 const App = () => {
     
     const [movies, setMovies] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [pageNumber, setPageNumber] = useState(1);
+    const [backupTerm, setBackupTerm] = useState('');
+    const [pageNumber, setPageNumber] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
 
-    const searchMovies = async (title, pageNumber) => {
+    const searchMovies = async (title, pageNumber=1) => {
+        if(title && title.length > 0) {
+            if (title != backupTerm) {
+                pageNumber = 1;
+            }
+            setBackupTerm(title);
+            setSearchTerm("");
+        } else {
+            title = backupTerm;
+        }
         try {
             const response = await fetch(`${API_URL}&s=${title}&page=${pageNumber}`);
             const data = await response.json();
@@ -34,8 +44,23 @@ const App = () => {
     }
 
     useEffect(() => {
+        setSearchTerm('Home Alone');
+        setPageNumber(1);
+    }, []);
+
+    useEffect(() => {
         searchMovies(searchTerm, pageNumber);
     }, [pageNumber]);
+
+    // var hoverText = document.querySelector('.hover-text');
+
+    // const handleMouseOut = (e) => {
+        
+    // };
+
+    // const handleMouseOver = (e) => {
+        
+    // };
 
     return (
         <div className="app">
@@ -46,13 +71,25 @@ const App = () => {
                     placeholder="Search for movies, series, games ..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => {
+                        if(e.key === 'Enter') {
+                            if(pageNumber == 1) {
+                                searchMovies(searchTerm);
+                            } else {
+                                setPageNumber(1);
+                            }
+                        }
+                    }}
                 />
                 <img
                     src={SearchIcon}
                     alt="Search"
                     onClick={() => {
-                        setPageNumber(1);
-                        searchMovies(searchTerm);
+                        if(pageNumber == 1) {
+                            searchMovies(searchTerm);
+                        } else {
+                            setPageNumber(1);
+                        }
                     }}
                 />
             </div>
@@ -60,8 +97,8 @@ const App = () => {
                 movies?.length > 0
                 ? (
                     <>
-                        <div className="empty">
-                            <h2>Showing {((pageNumber-1) * 10) + '-' + (pageNumber * 10)} out of {totalResults} movies found!</h2>
+                        <div className="empty text-center">
+                            <h2>Showing {((pageNumber-1) * 10) + '-' + (pageNumber * 10)} out of {totalResults} movies</h2>
                         </div>
                         <div className="container">
                         <button
@@ -75,7 +112,7 @@ const App = () => {
                         <p className="page-number">{pageNumber}</p>
                         <button
                             type="button"
-                            onClick={() => setPageNumber(pageNumber > 100 ? pageNumber : pageNumber+1)}
+                            onClick={() => setPageNumber(pageNumber > totalResults/10 ? pageNumber : pageNumber+1)}
                         >NEXT</button>
                         <button
                             type="button"
@@ -93,7 +130,7 @@ const App = () => {
                 )
                 : (
                     <div className="empty">
-                        <h2>No movie, series or game found!</h2>
+                        <h2>No movie, series or game found for <u>'{backupTerm}'</u>!</h2>
                     </div>
                 )
             }
@@ -108,6 +145,7 @@ const App = () => {
                 >PREV</button>
                 <p className="page-number">{pageNumber}</p>
                 <button
+                    className="glow"
                     type="button"
                     onClick={() => setPageNumber(pageNumber > 100 ? pageNumber : pageNumber+1)}
                 >NEXT</button>

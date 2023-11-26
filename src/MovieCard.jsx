@@ -2,21 +2,25 @@ import React from 'react';
 
 const MovieCard = ({ movie }) => {
 
-    const handleMouseOut = () => {
-        // document.body.style.backgroundColor = "#212426 !important";
-        // document.body.style.backgroundImage = "url()";
+    const handleMouseOut = (e) => {
+        // Some code here ...
     };
 
-    const handleMouseOver = () => {
-        // document.body.style.backgroundImage = "url("+movie.Poster+")";
-        // document.body.style.backgroundRepeat = "no-repeat";
-        // document.body.style.backgroundSize = "100%";
+    const handleMouseOver = (e) => {
+        // Some code here ...
     };
+
+    const handleMouseClick = () => {
+        if(!movie?.imdbID) {
+            return;
+        }
+        const IMDB_URL = `https://www.imdb.com/title/${movie.imdbID}/?ref_=ttls_li_tt`;
+        window.open(IMDB_URL, '_blank', 'noreferrer');
+    }
 
     return (
-        <div className="movie" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+        <div className='movie' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} onClick={handleMouseClick}>
             <div>
-                <p>{movie.Year}</p>
             </div>
 
             <div>
@@ -27,7 +31,7 @@ const MovieCard = ({ movie }) => {
             </div>
 
             <div>
-                <span>{movie.Type}</span>
+                <span>{movie.Type} </span><span className="year">({movie.Year})</span>
                 <h3>{movie.Title}</h3>
             </div>
         </div>
